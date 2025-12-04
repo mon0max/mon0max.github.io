@@ -24,7 +24,7 @@
             width: 80px;
             height: 80px;
             margin: 0 auto;
-            background: url('https://lh3.googleusercontent.com/proxy/iUZA8_t8SdEgEiTZKIK3BUrR8_u6SApnHP3ySNnveVZ3SuefY89dKcTafcjRJvFBFsl6hJqea8RnkRaCBKnBlQ') center/contain no-repeat; /* Реальный логотип ВГУВТ; замени если нужно */
+            background: url('https://vgavt.ru/upload/iblock/5e8/5e8b0b0b0b0b0b0b0b0b0b0b0b0b0b0b.png') center/contain no-repeat; /* Реальный логотип ВГУВТ; замени если нужно */
         }
         .title {
             font-size: 16px;
@@ -99,8 +99,42 @@
             font-size: 12px;
             color: #aaa;
         }
+        #personal-content {
+            display: none;
+        }
+        .profile-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 20px;
+        }
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .profile-label {
+            color: #aaa;
+        }
+        .profile-value {
+            text-align: right;
+        }
+        .back-button {
+            display: block;
+            margin: 20px auto;
+            background-color: #333;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
         @media (max-width: 375px) {
-            .button {
+            .button, .back-button {
                 font-size: 12px;
                 padding: 8px 10px;
             }
@@ -111,10 +145,10 @@
                 width: 70px;
                 font-size: 12px;
             }
-            .details {
+            .details, .profile-item {
                 font-size: 12px;
             }
-            .schedule-wrapper {
+            .schedule-wrapper, .profile-wrapper {
                 margin: 10px;
                 padding: 10px;
             }
@@ -126,55 +160,90 @@
         <div class="logo"></div>
         <div class="title">Волжский государственный университет водного транспорта</div>
     </div>
-    <div class="nav-buttons">
-        <button class="button">Личный кабинет</button>
-        <button class="button">Оценка</button>
-        <button class="button">Расписание уз</button>
-        <button class="button">Об университете</button>
+    <div id="main-content">
+        <div class="nav-buttons">
+            <button id="personal-cabinet-btn" class="button">Личный кабинет</button>
+            <button class="button">Оценка</button>
+            <button class="button">Расписание уз</button>
+            <button class="button">Об университете</button>
+        </div>
+        <div class="schedule-wrapper">
+            <div class="date">1 декабря</div>
+            <div class="event">
+                <div class="time">13:35</div>
+                <div class="details">Физическая культура<br><span class="address">ул. Большая Пироговская, д. 93</span></div>
+            </div>
+            <div class="event">
+                <div class="time">15:10</div>
+                <div class="details"></div> <!-- Пустой слот -->
+            </div>
+            <div class="event">
+                <div class="time">15:40<br>17:15</div>
+                <div class="details">Инструментальные средства программирования<br><span class="teacher">Мария Александровна Турчина</span><br><span class="auditorium">а. 570</span></div>
+            </div>
+            <div class="event">
+                <div class="time">15:40</div>
+                <div class="details">Основа операционных систем<br><span class="teacher">Анатолий Владимирович Чернов</span><br><span class="auditorium">а. 562</span></div>
+            </div>
+        </div>
+        <div class="schedule-wrapper">
+            <div class="date">Вторник</div>
+            <div class="event">
+                <div class="time">11:50<br>13:25</div>
+                <div class="details">Протоколы и интерфейсы ис (лек)<br><span class="auditorium">а. 477</span></div>
+            </div>
+            <div class="event">
+                <div class="time">13:35<br>15:10</div>
+                <div class="details">Математика (лек)<br><span class="auditorium">а. 166</span></div>
+            </div>
+            <div class="event">
+                <div class="time">15:40<br>17:15</div>
+                <div class="details">Математика (пр)<br><span class="auditorium">а. 361</span></div>
+            </div>
+            <div class="event">
+                <div class="time">17:25<br>19:00</div>
+                <div class="details">Основы экономики (пр)<br><span class="auditorium">а. 569</span></div>
+            </div>
+            <div class="event">
+                <div class="time">19:05<br>20:40</div>
+                <div class="details">ООС (лаб)<br><span class="auditorium">а. 461</span></div>
+            </div>
+        </div>
+        <div class="footer">Вторник</div>
     </div>
-    <div class="schedule-wrapper">
-        <div class="date">1 декабря</div>
-        <div class="event">
-            <div class="time">13:35</div>
-            <div class="details">Физическая культура<br><span class="address">ул. Большая Пироговская, д. 93</span></div>
+    <div id="personal-content" style="display: none;">
+        <div class="profile-wrapper">
+            <div class="profile-item">
+                <span class="profile-label">ФИО:</span>
+                <span class="profile-value">Иванов Иван Иванович</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Дата рождения:</span>
+                <span class="profile-value">14.07.2003</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Номер студ. билета:</span>
+                <span class="profile-value">345454-23</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Номер зачётки:</span>
+                <span class="profile-value">3454673-23</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Направление:</span>
+                <span class="profile-value">Информационные системы и технологии</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Номер направления:</span>
+                <span class="profile-value">09.03.02</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Группа:</span>
+                <span class="profile-value">ОИСИ-31</span>
+            </div>
         </div>
-        <div class="event">
-            <div class="time">15:10</div>
-            <div class="details"></div> <!-- Пустой слот -->
-        </div>
-        <div class="event">
-            <div class="time">15:40<br>17:15</div>
-            <div class="details">Инструментальные средства программирования<br><span class="teacher">Мария Александровна Турчина</span><br><span class="auditorium">а. 570</span></div>
-        </div>
-        <div class="event">
-            <div class="time">15:40</div>
-            <div class="details">Основа операционных систем<br><span class="teacher">Анатолий Владимирович Чернов</span><br><span class="auditorium">а. 562</span></div>
-        </div>
+        <button id="back-btn" class="back-button">Назад</button>
     </div>
-    <div class="schedule-wrapper">
-        <div class="date">Вторник</div>
-        <div class="event">
-            <div class="time">11:50<br>13:25</div>
-            <div class="details">Протоколы и интерфейсы ис (лек)<br><span class="auditorium">а. 477</span></div>
-        </div>
-        <div class="event">
-            <div class="time">13:35<br>15:10</div>
-            <div class="details">Математика (лек)<br><span class="auditorium">а. 166</span></div>
-        </div>
-        <div class="event">
-            <div class="time">15:40<br>17:15</div>
-            <div class="details">Математика (пр)<br><span class="auditorium">а. 361</span></div>
-        </div>
-        <div class="event">
-            <div class="time">17:25<br>19:00</div>
-            <div class="details">Основы экономики (пр)<br><span class="auditorium">а. 569</span></div>
-        </div>
-        <div class="event">
-            <div class="time">19:05<br>20:40</div>
-            <div class="details">ООС (лаб)<br><span class="auditorium">а. 461</span></div>
-        </div>
-    </div>
-    <div class="footer">Нижний Новгород 2025</div> <!-- Если нужно изменить, скажи -->
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -185,7 +254,17 @@
         const theme = tg.themeParams;
         document.body.style.backgroundColor = theme.bg_color || '#000';
         document.body.style.color = theme.text_color || '#fff';
-        // Дополнительные стили по теме, если нужно
+
+        // Функционал кнопок
+        document.getElementById('personal-cabinet-btn').addEventListener('click', function() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('personal-content').style.display = 'block';
+        });
+
+        document.getElementById('back-btn').addEventListener('click', function() {
+            document.getElementById('personal-content').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        });
     </script>
 </body>
 </html>
