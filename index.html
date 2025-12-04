@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ВГУТ Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: white;
+            background-color: #000;
+            overflow-x: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            background: url('https://vgavt.ru/upload/iblock/5e8/5e8b0b0b0b0b0b0b0b0b0b0b0b0b0b0b.png') center/contain no-repeat; /* Реальный логотип ВГУВТ; замени если нужно */
+        }
+        .title {
+            font-size: 16px;
+            margin: 10px 0 20px;
+            padding: 0 10px;
+            word-wrap: break-word;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 10px;
+            flex-wrap: wrap;
+        }
+        .button {
+            background-color: #333;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1 1 45%;
+            margin: 5px;
+            text-align: center;
+            max-width: 48%;
+        }
+        .schedule-section {
+            padding: 10px 20px;
+        }
+        .date {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .event {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .time {
+            font-size: 14px;
+            color: #aaa;
+            width: 80px;
+            flex-shrink: 0;
+            padding-right: 10px;
+            text-align: right;
+        }
+        .details {
+            font-size: 14px;
+            word-break: break-word;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #aaa;
+        }
+        @media (max-width: 375px) {
+            .button {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            .title {
+                font-size: 14px;
+            }
+            .time {
+                width: 70px;
+                font-size: 12px;
+            }
+            .details {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"></div>
+        <div class="title">Волжский государственный университет водного транспорта</div>
+    </div>
+    <div class="nav-buttons">
+        <button class="button">Личный кабинет</button>
+        <button class="button">Оценка</button>
+        <button class="button">Расписание уз</button>
+        <button class="button">Об университете</button>
+    </div>
+    <div class="schedule-section">
+        <div class="date">1 декабря</div>
+        <div class="event">
+            <div class="time">13:35</div>
+            <div class="details">Физическая культура<br>ул. Большая Пироговская, д. 93</div>
+        </div>
+        <div class="event">
+            <div class="time">15:10</div>
+            <div class="details"></div> <!-- Пустой слот -->
+        </div>
+        <div class="event">
+            <div class="time">15:40<br>17:15</div>
+            <div class="details">Инструментальные средства программирования<br>Мария Александровна Турчина<br>а. 570</div>
+        </div>
+        <div class="event">
+            <div class="time">15:40</div>
+            <div class="details">Основа операционных систем<br>Анатолий Владимирович Чернов<br>а. 562</div>
+        </div>
+    </div>
+    <div class="footer">Второй</div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // Развернуть на полный экран
+
+        // Адаптация под тему Telegram
+        const theme = tg.themeParams;
+        document.body.style.backgroundColor = theme.bg_color || '#000';
+        document.body.style.color = theme.text_color || '#fff';
+        // Дополнительные стили по теме, если нужно
+    </script>
+</body>
+</html>
