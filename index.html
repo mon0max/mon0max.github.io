@@ -24,7 +24,7 @@
             width: 80px;
             height: 80px;
             margin: 0 auto;
-            background: url('https://upload.wikimedia.org/wikipedia/ru/thumb/5/57/%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_%D0%92%D0%93%D0%A3%D0%92%D0%A2.svg/1024px-%D0%9B%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF_%D0%92%D0%93%D0%A3%D0%92%D0%A2.svg.png') center/contain no-repeat; /* Реальный логотип ВГУВТ; замени если нужно */
+            background: url('https://lh3.googleusercontent.com/proxy/iUZA8_t8SdEgEiTZKIK3BUrR8_u6SApnHP3ySNnveVZ3SuefY89dKcTafcjRJvFBFsl6hJqea8RnkRaCBKnBlQ') center/contain no-repeat; /* Реальный логотип ВГУВТ; замени если нужно */
         }
         .title {
             font-size: 16px;
@@ -67,6 +67,13 @@
             display: flex;
             margin-bottom: 20px;
             align-items: flex-start;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Еле заметная полоса */
+        }
+        .event:last-child {
+            border-bottom: none; /* Нет полосы у последнего */
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
         .time {
             font-size: 14px;
@@ -79,6 +86,12 @@
         .details {
             font-size: 14px;
             word-break: break-word;
+        }
+        .address, .auditorium {
+            color: #1E90FF; /* Синий для адресов и аудиторий */
+        }
+        .teacher {
+            color: #A9A9A9; /* Серый для ФИО */
         }
         .footer {
             text-align: center;
@@ -123,7 +136,7 @@
         <div class="date">1 декабря</div>
         <div class="event">
             <div class="time">13:35</div>
-            <div class="details">Физическая культура<br>ул. Большая Пироговская, д. 93</div>
+            <div class="details">Физическая культура<br><span class="address">ул. Большая Пироговская, д. 93</span></div>
         </div>
         <div class="event">
             <div class="time">15:10</div>
@@ -131,37 +144,37 @@
         </div>
         <div class="event">
             <div class="time">15:40<br>17:15</div>
-            <div class="details">Инструментальные средства программирования<br>Мария Александровна Турчина<br>а. 570</div>
+            <div class="details">Инструментальные средства программирования<br><span class="teacher">Мария Александровна Турчина</span><br><span class="auditorium">а. 570</span></div>
         </div>
         <div class="event">
             <div class="time">15:40</div>
-            <div class="details">Основа операционных систем<br>Анатолий Владимирович Чернов<br>а. 562</div>
+            <div class="details">Основа операционных систем<br><span class="teacher">Анатолий Владимирович Чернов</span><br><span class="auditorium">а. 562</span></div>
         </div>
     </div>
     <div class="schedule-wrapper">
         <div class="date">Вторник</div>
         <div class="event">
             <div class="time">11:50<br>13:25</div>
-            <div class="details">Протоколы и интерфейсы ис (лек)<br>а. 477</div>
+            <div class="details">Протоколы и интерфейсы ис (лек)<br><span class="auditorium">а. 477</span></div>
         </div>
         <div class="event">
             <div class="time">13:35<br>15:10</div>
-            <div class="details">Математика (лек)<br>а. 166</div>
+            <div class="details">Математика (лек)<br><span class="auditorium">а. 166</span></div>
         </div>
         <div class="event">
             <div class="time">15:40<br>17:15</div>
-            <div class="details">Математика (пр)<br>а. 361</div>
+            <div class="details">Математика (пр)<br><span class="auditorium">а. 361</span></div>
         </div>
         <div class="event">
             <div class="time">17:25<br>19:00</div>
-            <div class="details">Основы экономики (пр)<br>а. 569</div>
+            <div class="details">Основы экономики (пр)<br><span class="auditorium">а. 569</span></div>
         </div>
         <div class="event">
             <div class="time">19:05<br>20:40</div>
-            <div class="details">ООС (лаб)<br>а. 461</div>
+            <div class="details">ООС (лаб)<br><span class="auditorium">а. 461</span></div>
         </div>
     </div>
-    <div class="footer">Нижний Новгород 2025</div> <!-- Если это опечатка, замени на нужное -->
+    <div class="footer">Нижний Новгород 2025</div> <!-- Если нужно изменить, скажи -->
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -172,7 +185,7 @@
         const theme = tg.themeParams;
         document.body.style.backgroundColor = theme.bg_color || '#000';
         document.body.style.color = theme.text_color || '#fff';
-        // Дополнительные стили по теме, если нужно (для glassmorphism можно скорректировать rgba по theme)
+        // Дополнительные стили по теме, если нужно
     </script>
 </body>
 </html>
