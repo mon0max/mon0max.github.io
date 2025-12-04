@@ -51,8 +51,13 @@
             text-align: center;
             max-width: 48%;
         }
-        .schedule-section {
-            padding: 10px 20px;
+        .schedule-wrapper {
+            background: rgba(255, 255, 255, 0.05); /* Полупрозрачный фон */
+            backdrop-filter: blur(10px); /* Эффект размытия (жидкое стекло) */
+            border-radius: 12px; /* Закруглённые углы */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Лёгкая граница */
+            padding: 15px;
+            margin: 10px 20px;
         }
         .date {
             font-size: 18px;
@@ -96,6 +101,10 @@
             .details {
                 font-size: 12px;
             }
+            .schedule-wrapper {
+                margin: 10px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -110,7 +119,7 @@
         <button class="button">Расписание уз</button>
         <button class="button">Об университете</button>
     </div>
-    <div class="schedule-section">
+    <div class="schedule-wrapper">
         <div class="date">1 декабря</div>
         <div class="event">
             <div class="time">13:35</div>
@@ -129,7 +138,30 @@
             <div class="details">Основа операционных систем<br>Анатолий Владимирович Чернов<br>а. 562</div>
         </div>
     </div>
-    <div class="footer">Второй</div>
+    <div class="schedule-wrapper">
+        <div class="date">Вторник</div>
+        <div class="event">
+            <div class="time">11:50<br>13:25</div>
+            <div class="details">Протоколы и интерфейсы ис (лек)<br>а. 477</div>
+        </div>
+        <div class="event">
+            <div class="time">13:35<br>15:10</div>
+            <div class="details">Математика (лек)<br>а. 166</div>
+        </div>
+        <div class="event">
+            <div class="time">15:40<br>17:15</div>
+            <div class="details">Математика (пр)<br>а. 361</div>
+        </div>
+        <div class="event">
+            <div class="time">17:25<br>19:00</div>
+            <div class="details">Основы экономики (пр)<br>а. 569</div>
+        </div>
+        <div class="event">
+            <div class="time">19:05<br>20:40</div>
+            <div class="details">ООС (лаб)<br>а. 461</div>
+        </div>
+    </div>
+    <div class="footer">Вторник</div> <!-- Если это опечатка, замени на нужное -->
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -140,7 +172,7 @@
         const theme = tg.themeParams;
         document.body.style.backgroundColor = theme.bg_color || '#000';
         document.body.style.color = theme.text_color || '#fff';
-        // Дополнительные стили по теме, если нужно
+        // Дополнительные стили по теме, если нужно (для glassmorphism можно скорректировать rgba по theme)
     </script>
 </body>
 </html>
