@@ -1,284 +1,568 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>ВГУВТ Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root{
+            --bg: #050505;
+            --glass-bg: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.07);
+            --muted: #A9A9A9;
+            --accent: #1E90FF;
+            --divider: rgba(255,255,255,0.04);
+            --btn: #222;
+        }
 
-        body {
-            margin: 0;
-            padding: 0;
+        html,body{
+            margin:0;
+            padding:0;
+            height:100%;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: white;
-            background-color: #000;
-            overflow-x: hidden;
-            width: 100%;
+            background: var(--bg);
+            color: #fff;
+            -webkit-font-smoothing:antialiased;
             box-sizing: border-box;
         }
 
+        .app {
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+
+        /* Header */
         .header {
-            text-align: center;
-            padding: 20px 0;
+            text-align:center;
+            padding:20px 16px 8px;
         }
         .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
+            width:84px;
+            height:84px;
+            margin:0 auto 8px;
             background: url('https://lh3.googleusercontent.com/proxy/KQliGE44BZvqBsL_bVta1jtVgqGAELNqdD4LbIZW65GTK1oYn8xvFg3xaVBnr8T1y1f4P_I4eFxdld9BdTW8JQ') center/contain no-repeat;
+            filter: brightness(1.1);
         }
         .title {
-            font-size: 16px;
-            margin: 10px 0 20px;
-            padding: 0 10px;
-            word-wrap: break-word;
+            font-size:14px;
+            line-height:1.2;
+            margin:0 auto 14px;
+            max-width:260px;
+            color: #e9e9e9;
         }
 
+        /* Nav buttons row */
         .nav-buttons {
-            display: flex;
-            justify-content: space-around;
-            padding: 0 10px;
-            flex-wrap: wrap;
+            display:flex;
+            gap:8px;
+            padding: 0 16px 14px;
+            justify-content: center;
+            flex-wrap:wrap;
         }
         .button {
-            background-color: #333;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            padding: 10px 15px;
+            background: var(--btn);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            color: #fff;
+            padding: 12px 16px;
             font-size: 14px;
             cursor: pointer;
-            flex: 1 1 45%;
-            margin: 5px;
-            text-align: center;
-            max-width: 48%;
+            min-width: 140px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.6) inset;
         }
 
-        /* Стеклянные блоки */
+        /* Glass block (day container) */
         .glass-block {
-            background: rgba(255, 255, 255, 0.05);
+            margin: 12px 16px;
+            padding: 14px;
+            border-radius: 14px;
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin: 10px 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+        .glass-title {
+            font-weight:600;
+            font-size:18px;
+            margin-bottom:6px;
+        }
+        .glass-sub {
+            font-size:12px;
+            color: #cfcfcf;
+            margin-bottom:12px;
         }
 
-        /* Новости */
+        /* Event row */
+        .event {
+            display:flex;
+            gap:12px;
+            padding:10px 0;
+            align-items:flex-start;
+            border-bottom: 1px solid var(--divider);
+        }
+        .event:last-child {
+            border-bottom: none;
+        }
+        .time {
+            width:64px;
+            font-size:13px;
+            color:#ddd;
+            text-align:right;
+            flex-shrink:0;
+            line-height:1.2;
+        }
+        .details {
+            font-size:14px;
+            line-height:1.25;
+            color: #f1f1f1;
+            word-break:break-word;
+        }
+        .details .place {
+            display:block;
+            margin-top:6px;
+            font-size:13px;
+            color: var(--accent);
+        }
+        .details .teacher {
+            display:block;
+            margin-top:4px;
+            font-size:13px;
+            color: var(--muted);
+        }
+
+        /* Footer small */
+        .footer {
+            text-align:center;
+            color: var(--muted);
+            font-size:12px;
+            margin-top: 10px;
+        }
+
+        /* News / About styles (reused glass look) */
         .news-card {
-            margin: 15px 20px;
-            padding: 15px;
+            margin: 12px 16px;
+            padding: 12px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
         }
         .news-date {
-            font-size: 12px;
-            color: #aaa;
-            margin-bottom: 10px;
+            font-size:12px;
+            color: #cfcfcf;
+            margin-bottom:8px;
         }
         .news-author {
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 15px;
-            text-align: right;
+            font-size:12px;
+            color: var(--muted);
+            margin-top:14px;
+            text-align:right;
         }
         .read-more {
-            color: #1E90FF;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 10px;
-            display: inline-block;
+            color: var(--accent);
+            font-size:14px;
+            cursor:pointer;
+            display:inline-block;
+            margin-top:8px;
         }
 
+        /* Search area for teacher */
+        .search-container {
+            margin: 12px 16px;
+            position: relative;
+        }
+        .search-input {
+            width:100%;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.06);
+            background: #0f0f0f;
+            color:#fff;
+            box-sizing:border-box;
+            font-size:14px;
+        }
+        .suggestion-dropdown {
+            position:absolute;
+            left:0;
+            right:0;
+            top: calc(100% + 8px);
+            background: var(--glass-bg);
+            border-radius:10px;
+            border:1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+            display:none;
+            z-index: 30;
+            overflow:hidden;
+        }
+        .suggestion-item {
+            padding:10px;
+            cursor:pointer;
+            font-size:14px;
+        }
+        .suggestion-item:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Back button */
         .back-button {
-            display: block;
-            margin: 20px auto 30px;
-            background-color: #333;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
+            display:block;
+            width: calc(100% - 32px);
+            margin: 14px 16px;
+            padding:12px;
+            border-radius:12px;
+            border:none;
+            background:var(--btn);
+            color:#fff;
+            font-size:14px;
+            cursor:pointer;
         }
 
-        /* Скрытые блоки страниц */
-        #personal-content, #schedule-vuz-content, #about-content {
-            display: none;
+        /* Responsive */
+        @media (max-width:420px){
+            .time{ width:56px; font-size:12px; }
+            .title { font-size:13px; }
+            .glass-title { font-size:16px; }
+            .button {min-width:120px; padding:10px 12px;}
         }
-
     </style>
 </head>
 <body>
+    <div class="app">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo" aria-hidden="true"></div>
+            <div class="title">Волжский государственный университет водного транспорта</div>
+        </div>
 
-    <!-- ======== ОБЩИЙ ХЕДЕР ======== -->
-    <div class="header">
-        <div class="logo"></div>
-        <div class="title">Волжский государственный университет водного транспорта</div>
+        <!-- MAIN PAGE -->
+        <div id="main-content">
+            <div class="nav-buttons">
+                <button id="personal-cabinet-btn" class="button">Личный кабинет</button>
+                <button id="grades-btn" class="button">Оценка</button>
+                <button id="schedule-vuz-btn" class="button">Расписание вуза</button>
+                <button id="about-btn" class="button">Об университете</button>
+            </div>
+
+            <!-- ПОНЕДЕЛЬНИК -->
+            <div class="glass-block" id="monday-block">
+                <div class="glass-title">Понедельник</div>
+                <div class="glass-sub">1 декабря</div>
+
+                <div class="event">
+                    <div class="time">8:00<br>9:35</div>
+                    <div class="details">
+                        Основы операционных систем
+                        <span class="place">а. 772</span>
+                        <span class="teacher">— Мария Александровна Турчина</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">15:40<br>17:15</div>
+                    <div class="details">
+                        Инструментальные средства программирования
+                        <span class="place">а. 561</span>
+                        <span class="teacher">— Мария Александровна Турчина</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">19:05<br>20:40</div>
+                    <div class="details">
+                        Основы операционных систем
+                        <span class="place">а. 562</span>
+                        <span class="teacher">— Анатолий Владимирович Чернов</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ВТОРНИК -->
+            <div class="glass-block" id="tuesday-block">
+                <div class="glass-title">Вторник</div>
+                <div class="glass-sub">Расписание на вторник</div>
+
+                <div class="event">
+                    <div class="time">11:50</div>
+                    <div class="details">
+                        Протоколы и интерфейсы ис (лек)
+                        <span class="place">а. 477</span>
+                        <span class="teacher">— (лектор)</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">13:35</div>
+                    <div class="details">
+                        Математика (лек)
+                        <span class="place">а. 166</span>
+                        <span class="teacher">— (лектор)</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">15:40<br>17:15</div>
+                    <div class="details">
+                        Математика (пр)
+                        <span class="place">а. 361</span>
+                        <span class="teacher">— (преподаватель)</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">17:25<br>19:00</div>
+                    <div class="details">
+                        Основы экономики (пр)
+                        <span class="place">а. 569</span>
+                        <span class="teacher">— (преподаватель)</span>
+                    </div>
+                </div>
+
+                <div class="event">
+                    <div class="time">19:05<br>20:40</div>
+                    <div class="details">
+                        ООС (лаб)
+                        <span class="place">а. 461</span>
+                        <span class="teacher">— (лабораторный)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer">Нижний Новгород 2025</div>
+        </div>
+
+        <!-- PERSONAL -->
+        <div id="personal-content" style="display:none;">
+            <div class="glass-block" style="text-align:center;">
+                <div class="glass-title">Личный кабинет</div>
+            </div>
+
+            <div class="glass-block">
+                <div><strong>ФИО:</strong> Иванов Иван Иванович</div>
+                <div><strong>Дата рождения:</strong> 14.07.2003</div>
+                <div><strong>Номер студ. билета:</strong> 345454-23</div>
+                <div><strong>Группа:</strong> ОИСИ-31</div>
+            </div>
+
+            <button class="back-button" id="back-btn-personal">Назад</button>
+        </div>
+
+        <!-- GRADES (Оценка) -->
+        <div id="grades-content" style="display:none;">
+            <div class="glass-block" style="text-align:center;">
+                <div class="glass-title">Оценки</div>
+            </div>
+
+            <!-- сюда позже добавим детали оценок -->
+            <button class="back-button" id="back-btn-grades">Назад</button>
+        </div>
+
+        <!-- SCHEDULE VUZ (с поиском преподавателя) -->
+        <div id="schedule-vuz-content" style="display:none;">
+            <div class="glass-block" style="text-align:center;">
+                <div class="glass-title">Расписание вуза</div>
+            </div>
+
+            <div class="search-container">
+                <input id="teacher-search" class="search-input" placeholder="Поиск преподавателя..." type="text" autocomplete="off" />
+                <div id="suggestion-dropdown" class="suggestion-dropdown"></div>
+            </div>
+
+            <!-- Расписание выбранного преподавателя (скрыто по умолчанию) -->
+            <div id="teacher-schedule" style="display:none;">
+                <div class="glass-block">
+                    <div class="glass-title" id="teacher-name-title">Анатолий Владимирович Шеянов</div>
+                    <div class="glass-sub">Понедельник — пример расписания</div>
+
+                    <div class="event">
+                        <div class="time">8:00<br>9:35</div>
+                        <div class="details">
+                            Основы операционных систем
+                            <span class="place">а. 772</span>
+                            <span class="teacher">— (лек)</span>
+                        </div>
+                    </div>
+
+                    <div class="event">
+                        <div class="time">15:40<br>17:15</div>
+                        <div class="details">
+                            Инструментальные средства программирования
+                            <span class="place">а. 561</span>
+                            <span class="teacher">— (лек/пр)</span>
+                        </div>
+                    </div>
+
+                    <div class="event">
+                        <div class="time">19:05<br>20:40</div>
+                        <div class="details">
+                            Основы операционных систем
+                            <span class="place">а. 562</span>
+                            <span class="teacher">— (лек)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="back-button" id="back-btn-schedule">Назад</button>
+        </div>
+
+        <!-- ABOUT (Об университете) -->
+        <div id="about-content" style="display:none;">
+            <div class="glass-block" style="text-align:center;">
+                <div class="glass-title">Об университете</div>
+            </div>
+
+            <button class="button" style="width:calc(100% - 32px); margin: 10px 16px;">Заказать справку</button>
+
+            <div class="news-card">
+                <div class="news-date">5 декабря 2025 г.</div>
+                На этой неделе занятий не будет, у меня кошка родила.
+                <div class="news-author">Петров Пётр Петрович</div>
+            </div>
+
+            <div class="news-card">
+                <div class="news-date">4 декабря 2025 г.</div>
+
+                <div id="news-short">
+                    Команда курсантов Нижегородского ордена “Знак Почета” речного училища им. И.П. Кулибина стала победителем городских соревнований по гиревому спорту...
+                </div>
+
+                <div id="news-full" style="display:none; margin-top:8px; color:#eee; line-height:1.35;">
+                    Команда курсантов Нижегородского ордена «Знак Почета» речного училища им. И.П. Кулибина стала победителем городских соревнований по гиревому спорту.
+                    3 декабря в Нижегородской областной спортивной школе «Олимпиец» сборная курсантов НРУ им. И. П. Кулибина достойно представила родное речное училище.
+                    Курсанты училища Устин Дерюгин, Александр Сизов, Николай Басарукин, Артем Бугров, Иван Черенков и Егор Гусев по результатам соревнований заняли 1 общекомандное место.
+                    Поздравляем ребят с успешным выступлением на соревнованиях, и пожелаем им победного выступления в финале областных соревнований 11 декабря!
+                </div>
+
+                <span id="read-more" class="read-more">Читать далее</span>
+
+                <div class="news-author">Андрей Баранов, Заведующий кафедрой физического воспитания и спорта ВГУВТ</div>
+            </div>
+
+            <button class="back-button" id="back-btn-about">Назад</button>
+        </div>
+
     </div>
 
-    <!-- ======== ГЛАВНАЯ СТРАНИЦА ======== -->
-    <div id="main-content">
-        <div class="nav-buttons">
-            <button id="personal-cabinet-btn" class="button">Личный кабинет</button>
-            <button class="button">Оценка</button>
-            <button id="schedule-vuz-btn" class="button">Расписание вуза</button>
-            <button id="about-btn" class="button">Об университете</button>
-        </div>
-
-        <!-- Здесь у тебя было расписание — я оставляю как есть -->
-        <div class="glass-block">
-            <div class="date">1 декабря</div>
-            <div class="event">
-                <div class="time">13:35</div>
-                <div class="details">Физическая культура<br><span class="address">ул. Большая Пироговская, д. 93</span></div>
-            </div>
-            <div class="event">
-                <div class="time">15:10</div>
-                <div class="details"></div>
-            </div>
-            <div class="event">
-                <div class="time">15:40<br>17:15</div>
-                <div class="details">Инструментальные средства программирования<br><span class="teacher">Мария Александровна Турчина</span><br><span class="auditorium">а. 570</span></div>
-            </div>
-        </div>
-
-        <div class="footer">Нижний Новгород 2025</div>
-    </div>
-
-    <!-- ======== ЛИЧНЫЙ КАБИНЕТ ======== -->
-    <div id="personal-content">
-        <div class="glass-block" style="text-align:center;font-size:16px;">Личный кабинет</div>
-
-        <div class="glass-block">
-            <div><b>ФИО:</b> Иванов Иван Иванович</div>
-            <div><b>Дата рождения:</b> 14.07.2003</div>
-            <div><b>Номер студ. билета:</b> 345454-23</div>
-            <div><b>Группа:</b> ОИСИ-31</div>
-        </div>
-
-        <button class="back-button" id="back-btn-personal">Назад</button>
-    </div>
-
-    <!-- ======== РАСПИСАНИЕ ВУЗА ======== -->
-    <div id="schedule-vuz-content">
-        <div class="glass-block" style="text-align:center;font-size:16px;">Расписание вуза</div>
-
-        <div class="glass-block">
-            <div class="date">Понедельник</div>
-            <div class="event">
-                <div class="time">8:00</div>
-                <div class="details">Основы операционных систем<br><span class="auditorium">а. 772</span></div>
-            </div>
-        </div>
-
-        <button class="back-button" id="back-btn-schedule">Назад</button>
-    </div>
-
-    <!-- ===================================================== -->
-    <!-- ================= ОБ УНИВЕРСИТЕТЕ ================== -->
-    <!-- ===================================================== -->
-    <div id="about-content">
-
-        <!-- Заголовок в стиле жидкого стекла -->
-        <div class="glass-block" style="text-align:center;font-size:16px;">
-            Об университете
-        </div>
-
-        <!-- Кнопка "Заказать справку" -->
-        <button class="button" style="width:calc(100% - 40px); display:block; margin: 10px auto 20px;">
-            Заказать справку
-        </button>
-
-        <!-- ======== НОВОСТЬ 1 ======== -->
-        <div class="news-card">
-            <div class="news-date">5 декабря 2025 г.</div>
-            На этой неделе занятий не будет, у меня кошка родила.
-            <div class="news-author">
-                Петров Пётр Петрович
-            </div>
-        </div>
-
-        <!-- ======== НОВОСТЬ 2 (свернутая) ======== -->
-        <div class="news-card">
-            <div class="news-date">4 декабря 2025 г.</div>
-
-            <div id="news-short">
-                Команда курсантов Нижегородского ордена “Знак Почета” речного училища им. И.П. Кулибина стала победителем городских соревнований по гиревому спорту...
-            </div>
-
-            <div id="news-full" style="display:none;">
-                Команда курсантов Нижегородского ордена «Знак Почета» речного училища им. И.П. Кулибина стала победителем городских соревнований по гиревому спорту.  
-                3 декабря в Нижегородской областной спортивной школе «Олимпиец» сборная курсантов НРУ им. И. П. Кулибина достойно представила родное речное училище.  
-                Курсанты училища Устин Дерюгин, Александр Сизов, Николай Басарукин, Артем Бугров, Иван Черенков и Егор Гусев по результатам соревнований заняли 1 общекомандное место.  
-                Поздравляем ребят с успешным выступлением, и желаем им победного выступления в финале областных соревнований 11 декабря!
-            </div>
-
-            <span id="read-more" class="read-more">Читать далее</span>
-
-            <div class="news-author">Андрей Баранов,  
-                Заведующий кафедрой физического воспитания и спорта ВГУВТ
-            </div>
-        </div>
-
-        <button class="back-button" id="back-btn-about">Назад</button>
-    </div>
-
-    <!-- =================== JS =================== -->
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        // Telegram Web App
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg && tg.ready) { tg.ready(); tg.expand && tg.expand(); }
 
-
-        /* -------- ПЕРЕХОДЫ МЕЖДУ СТРАНИЦАМИ -------- */
-
+        // Elements
         const main = document.getElementById('main-content');
         const personal = document.getElementById('personal-content');
-        const schedule = document.getElementById('schedule-vuz-content');
+        const scheduleVuz = document.getElementById('schedule-vuz-content');
         const about = document.getElementById('about-content');
+        const grades = document.getElementById('grades-content');
 
-        document.getElementById('personal-cabinet-btn').onclick = () => {
+        // Buttons
+        document.getElementById('personal-cabinet-btn').addEventListener('click', () => {
             main.style.display = 'none';
             personal.style.display = 'block';
-        };
-        document.getElementById('back-btn-personal').onclick = () => {
+            scrollToTop();
+        });
+
+        document.getElementById('back-btn-personal').addEventListener('click', () => {
             personal.style.display = 'none';
             main.style.display = 'block';
-        };
+            scrollToTop();
+        });
 
-        document.getElementById('schedule-vuz-btn').onclick = () => {
+        document.getElementById('schedule-vuz-btn').addEventListener('click', () => {
             main.style.display = 'none';
-            schedule.style.display = 'block';
-        };
-        document.getElementById('back-btn-schedule').onclick = () => {
-            schedule.style.display = 'none';
-            main.style.display = 'block';
-        };
+            scheduleVuz.style.display = 'block';
+            // Reset search
+            document.getElementById('teacher-search').value = '';
+            document.getElementById('suggestion-dropdown').style.display = 'none';
+            document.getElementById('teacher-schedule').style.display = 'none';
+            scrollToTop();
+        });
 
-        // НОВАЯ КНОПКА
-        document.getElementById('about-btn').onclick = () => {
+        document.getElementById('back-btn-schedule').addEventListener('click', () => {
+            scheduleVuz.style.display = 'none';
+            main.style.display = 'block';
+            scrollToTop();
+        });
+
+        document.getElementById('about-btn').addEventListener('click', () => {
             main.style.display = 'none';
             about.style.display = 'block';
-        };
-        document.getElementById('back-btn-about').onclick = () => {
+            scrollToTop();
+        });
+        document.getElementById('back-btn-about').addEventListener('click', () => {
             about.style.display = 'none';
             main.style.display = 'block';
-        };
+            scrollToTop();
+        });
 
+        document.getElementById('grades-btn').addEventListener('click', () => {
+            main.style.display = 'none';
+            grades.style.display = 'block';
+            scrollToTop();
+        });
+        document.getElementById('back-btn-grades').addEventListener('click', () => {
+            grades.style.display = 'none';
+            main.style.display = 'block';
+            scrollToTop();
+        });
 
-        /* -------- КНОПКА "ЧИТАТЬ ДАЛЕЕ" -------- */
+        // Read more in news
+        const readMoreBtn = document.getElementById('read-more');
+        if (readMoreBtn) {
+            readMoreBtn.addEventListener('click', () => {
+                document.getElementById('news-short').style.display = 'none';
+                document.getElementById('news-full').style.display = 'block';
+                readMoreBtn.style.display = 'none';
+            });
+        }
 
-        document.getElementById('read-more').onclick = () => {
-            document.getElementById('news-short').style.display = 'none';
-            document.getElementById('news-full').style.display = 'block';
-            document.getElementById('read-more').style.display = 'none';
-        };
+        // Teacher search autocomplete
+        const teacherName = 'Анатолий Владимирович Шеянов';
+        const searchInput = document.getElementById('teacher-search');
+        const dropdown = document.getElementById('suggestion-dropdown');
+        const teacherSchedule = document.getElementById('teacher-schedule');
+        const teacherTitle = document.getElementById('teacher-name-title');
 
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const q = this.value.trim().toLowerCase();
+                dropdown.innerHTML = '';
+                dropdown.style.display = 'none';
+                teacherSchedule.style.display = 'none';
+
+                if (!q) return;
+
+                if (teacherName.toLowerCase().includes(q)) {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.textContent = teacherName;
+                    item.addEventListener('click', function() {
+                        searchInput.value = teacherName;
+                        dropdown.style.display = 'none';
+                        // show schedule
+                        teacherTitle.textContent = teacherName;
+                        teacherSchedule.style.display = 'block';
+                        // scroll to schedule
+                        teacherSchedule.scrollIntoView({behavior:'smooth', block:'start'});
+                    });
+                    dropdown.appendChild(item);
+                    dropdown.style.display = 'block';
+                }
+            });
+
+            // click outside to close dropdown
+            document.addEventListener('click', function(e){
+                if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollToTop(){
+            window.scrollTo({top:0, behavior:'instant'});
+        }
     </script>
-
 </body>
 </html>
