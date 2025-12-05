@@ -99,10 +99,10 @@
             font-size: 12px;
             color: #aaa;
         }
-        #personal-content {
+        #personal-content, #schedule-vuz-content {
             display: none;
         }
-        .cabinet-title {
+        .cabinet-title, .schedule-vuz-title {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 12px;
@@ -143,6 +143,43 @@
             font-size: 14px;
             cursor: pointer;
         }
+        .search-container {
+            position: relative;
+            margin: 0 20px 20px;
+        }
+        .search-input {
+            width: 100%;
+            background-color: #333;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .suggestion-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 5px;
+            display: none;
+            z-index: 10;
+        }
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        #teacher-schedule {
+            display: none;
+        }
         @media (max-width: 375px) {
             .button, .back-button {
                 font-size: 12px;
@@ -158,9 +195,12 @@
             .details, .profile-item {
                 font-size: 12px;
             }
-            .schedule-wrapper, .profile-wrapper, .cabinet-title {
+            .schedule-wrapper, .profile-wrapper, .cabinet-title, .schedule-vuz-title {
                 margin: 10px;
                 padding: 10px;
+            }
+            .search-container {
+                margin: 0 10px 10px;
             }
         }
     </style>
@@ -174,7 +214,7 @@
         <div class="nav-buttons">
             <button id="personal-cabinet-btn" class="button">Личный кабинет</button>
             <button class="button">Оценка</button>
-            <button class="button">Расписание уз</button>
+            <button id="schedule-vuz-btn" class="button">Расписание вуза</button>
             <button class="button">Об университете</button>
         </div>
         <div class="schedule-wrapper">
@@ -253,7 +293,31 @@
                 <span class="profile-value">ОИСИ-31</span>
             </div>
         </div>
-        <button id="back-btn" class="back-button">Назад</button>
+        <button id="back-btn-personal" class="back-button">Назад</button>
+    </div>
+    <div id="schedule-vuz-content" style="display: none;">
+        <div class="schedule-vuz-title">Расписание вуза</div>
+        <div class="search-container">
+            <input type="text" id="teacher-search" class="search-input" placeholder="Поиск преподавателя...">
+            <div id="suggestion-dropdown" class="suggestion-dropdown"></div>
+        </div>
+        <div id="teacher-schedule" class="schedule-wrapper" style="display: none;">
+            <div class="date">Понедельник</div>
+            <div class="date">1 декабря</div>
+            <div class="event">
+                <div class="time">8:00<br>9:35</div>
+                <div class="details">Основы операционных систем<br><span class="auditorium">а. 772</span></div>
+            </div>
+            <div class="event">
+                <div class="time">15:40<br>17:15</div>
+                <div class="details">Инструментальные средства программирования<br><span class="auditorium">а. 561</span></div>
+            </div>
+            <div class="event">
+                <div class="time">19:05<br>20:40</div>
+                <div class="details">Основы операционных систем<br><span class="auditorium">а. 562</span></div>
+            </div>
+        </div>
+        <button id="back-btn-schedule" class="back-button">Назад</button>
     </div>
 
     <script>
@@ -272,9 +336,47 @@
             document.getElementById('personal-content').style.display = 'block';
         });
 
-        document.getElementById('back-btn').addEventListener('click', function() {
+        document.getElementById('back-btn-personal').addEventListener('click', function() {
             document.getElementById('personal-content').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
+        });
+
+        document.getElementById('schedule-vuz-btn').addEventListener('click', function() {
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('schedule-vuz-content').style.display = 'block';
+        });
+
+        document.getElementById('back-btn-schedule').addEventListener('click', function() {
+            document.getElementById('schedule-vuz-content').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            // Сброс поиска
+            document.getElementById('teacher-search').value = '';
+            document.getElementById('suggestion-dropdown').style.display = 'none';
+            document.getElementById('teacher-schedule').style.display = 'none';
+        });
+
+        // Автозаполнение
+        const teacherName = 'Анатолий Владимирович Шенанов';
+        const searchInput = document.getElementById('teacher-search');
+        const dropdown = document.getElementById('suggestion-dropdown');
+        const schedule = document.getElementById('teacher-schedule');
+
+        searchInput.addEventListener('input', function() {
+            const value = this.value.toLowerCase();
+            dropdown.innerHTML = '';
+            dropdown.style.display = 'none';
+            if (value && teacherName.toLowerCase().includes(value)) {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = teacherName;
+                item.addEventListener('click', function() {
+                    searchInput.value = teacherName;
+                    dropdown.style.display = 'none';
+                    schedule.style.display = 'block';
+                });
+                dropdown.appendChild(item);
+                dropdown.style.display = 'block';
+            }
         });
     </script>
 </body>
